@@ -1,0 +1,52 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f8;
+        color: #333;
+        padding: 50px;
+    }
+    .thank-you-container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+    h1 {
+        font-size: 2.5em;
+        color: #462181; /* Green color for professionalism */
+    }
+    p {
+        font-size: 1.2em;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+    a {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1em;
+        color: #fff;
+        background-color: #55258b; /* Green button */
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    a:hover {
+        background-color: #c29dec; /* Darker green on hover */
+    }
+</style>
+
+<div class="thank-you-container">
+    <h1>Thank You for Your Application!</h1>
+    <p>We appreciate your interest in joining our team. Your application has been successfully submitted, and we will review it shortly.</p>
+    <p>If you have any questions, feel free to contact us.</p>
+    <br>
+    <a href="{% url 'home' %}">Return to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}Available Job Opportunities{% endblock %}
+
+{% block content %}
+<style>
+    /* Main Container Styling */
+    .available-jobs-container {
+        display: flex;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
+    }
+
+    .search-container {
+        flex: 1;
+        padding: 30px;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0.05, 0, 0, 0.05);
+    }
+
+    .search-container h3 {
+        font-size: 1.5em;
+        color: #27158f;
+        margin-bottom: 15px;
+    }
+
+    .search-form input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+
+    .search-form button {
+        margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+        background-color: #27158f;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .search-form button:hover {
+        background-color: #1e1070;
+    }
+
+    .job-list-container {
+        flex: 3;
+    }
+
+    .job-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .job-item {
+        padding: 20px;
+        background: linear-gradient(135deg, #e6eaf8, #ffffff);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .job-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-title {
+        font-size: 1.8em;
+        color: #27158f;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .job-item p {
+        margin: 8px 0;
+        color: #333;
+        font-size: 1.1em;
+    }
+
+    .apply-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #27158f;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        font-size: 1em;
+    }
+
+    .apply-button:hover {
+        background-color: #1e1070;
+    }
+
+    /* Applied Status Styling */
+    .applied-status {
+        color: #28a745 !important; /* Ensures green color is applied */
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+</style>
+
+<main class="available-jobs-container">
+    <div class="search-container">
+        <h3>Search Jobs</h3>
+        <form class="search-form" method="get">
+            <input type="text" name="q" placeholder="Search by title, company, or skills" value="{{ request.GET.q }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="job-list-container">
+        <h2>Available Job Opportunities</h2>
+        <div class="job-list">
+            {% for job in jobs %}
+                <div class="job-item">
+                    <h3 class="job-title">{{ job.title }}</h3>
+                    <p><strong>Company:</strong> {{ job.company }}</p>
+                    <p><strong>Description:</strong> {{ job.description }}</p>
+                    <p><strong>Salary:</strong> {{ job.salary }}</p>
+                    <p><strong>Skills:</strong> {{ job.skills }}</p>
+                    
+                    {% if job.id in applied_jobs %}
+                        <p class="applied-status"><strong>Status:</strong> Applied</p>
+                    {% else %}
+                        <a href="{% url 'apply' job.id %}" class="apply-button">Apply Now</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+{% endblock %}

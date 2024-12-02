@@ -1,0 +1,36 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<center>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Welcome to Job Searching Portal</h1>
+            <h2>Your dream job is just a click away!</h2>
+            <br>
+            <a href="{% url 'available_jobs' %}" class="cta-button"><strong>Explore Jobs</strong></a>
+        </div>
+        <br>
+        <br>
+        <div class="hero-background">
+            <img src="{% static 'images/workplace_background.webp' %}" alt="Workplace Background" class="background-image" width="800" height="600">
+        </div>
+    </section>
+</center>
+
+<center>
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <h1>Why Choose US ?</h1>
+        <div class="benefits">
+            <div class="benefit-card"><h2>Wide Range of Opportunities</h2></div>
+            <div class="benefit-card"><h2>Verified Employers</h2></div>
+            <div class="benefit-card"><h2>Easy Application Process</h2></div>
+        </div>
+    </section>
+</center>
+
+
+{% endblock %}

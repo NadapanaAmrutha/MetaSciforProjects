@@ -1,0 +1,246 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block title %}Application Form{% endblock %}
+
+{% block content %}
+<style>
+    /* Global Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        text-align: center;
+        color: #27158f;
+        margin-bottom: 20px;
+    }
+
+    /* Form Styles */
+    main {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    fieldset {
+        border: 1px solid #27158f;
+        border-radius: 8px;
+        padding: 70px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+
+    legend {
+        font-size: 1.5em;
+        color: #27158f;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .input-large {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        width: 100%;
+        transition: border-color 0.3s;
+    }
+
+    .input-large:focus {
+        border-color: #27158f;
+        outline: none;
+    }
+
+    .save-button,
+    .submit-button {
+        background-color: #27158f;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        margin-right: 10px;
+    }
+
+    .save-button:hover,
+    .submit-button:hover {
+        background-color: #1f126f;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .input-large {
+            font-size: 0.9em;
+        }
+
+        .save-button,
+        .submit-button {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+</style>
+
+<main>
+    <script>
+        function toggleExperienceFields() {
+            const experienceFields = document.getElementById('experience_fields');
+            const experienceYes = document.getElementById('experience_yes');
+            experienceFields.style.display = experienceYes.checked ? 'block' : 'none';
+        }
+    </script>
+
+    <h2>Application Form</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Personal Details -->
+        <fieldset>
+            <legend>Personal Details</legend>
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="current_address">Current Address:</label>
+                <input type="text" id="current_address" name="current_address" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="permanent_address">Permanent Address:</label>
+                <input type="text" id="permanent_address" name="permanent_address" class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <select id="country" name="country" required class="input-large">
+                    <option value="India">India</option>
+                    <option value="USA">USA</option>
+                    <option value="UK">UK</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <div>
+                    <input type="radio" id="male" name="gender" value="male" required> Male
+                    <input type="radio" id="female" name="gender" value="female" required> Female
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Educational Details -->
+        <fieldset>
+            <legend>Educational Details</legend>
+            <div class="form-group">
+                <label for="highest_graduation">Highest Graduation:</label>
+                <input type="text" id="highest_graduation" name="highest_graduation" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                <input type="text" id="department" name="department" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="institution">Institution:</label>
+                <input type="text" id="institution" name="institution" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="year_of_passing">Year of Passing:</label>
+                <input type="number" id="year_of_passing" name="year_of_passing" required class="input-large">
+            </div>
+            <div class="form-group">
+                <label for="percentage">Percentage:</label>
+                <input type="text" id="percentage" name="percentage" required class="input-large">
+            </div>
+        </fieldset>
+
+        <!-- Experience Details -->
+        <fieldset>
+            <legend>Experience</legend>
+            <div>
+                <label for="experience">Experience:</label>
+                <input type="radio" id="experience_yes" name="experience" value="yes" onclick="toggleExperienceFields()"> Yes
+                <input type="radio" id="experience_no" name="experience" value="no" onclick="toggleExperienceFields()"> No
+            </div>
+            <div id="experience_fields" style="display: none;">
+                <div class="form-group">
+                    <label for="company_name">Company Name:</label>
+                    <input type="text" id="company_name" name="company_name" class="input-large">
+                </div>
+                <div class="form-group">
+                    <label for="designation">Designation:</label>
+                    <input type="text" id="designation" name="designation" class="input-large">
+                </div>
+                <div class="form-group">
+                    <label for="years_of_experience">Years of Experience:</label>
+                    <input type="text" id="years_of_experience" name="years_of_experience" class="input-large">
+                </div>
+                <div class="form-group">
+                    <label for="job_description">Job Description:</label>
+                    <textarea id="job_description" name="job_description" class="input-large"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Additional Details -->
+        <fieldset>
+            <legend>Additional Details</legend>
+            <div class="form-group">
+                <label for="preferred_location">Preferred Location:</label>
+                <select id="preferred_location" name="preferred_location" multiple class="input-large">
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Bangalore">Bangalore</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="willing_to_relocate">Willing to Relocate:</label>
+                <input type="radio" id="willing_yes" name="willing_to_relocate" value="yes"> Yes
+                <input type="radio" id="willing_no" name="willing_to_relocate" value="no"> No
+            </div>
+            <div class="form-group">
+                <label for="declaration">
+                    <input type="checkbox" id="declaration" name="declaration" required> I hereby declare that all the information is accurate.
+                </label>
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <button type="submit" class="submit-button">Submit</button>
+        </div>
+    </form>
+</main>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'jobs/base.html' %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .job-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .job-item {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .job-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .job-details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .job-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #2d3e50;
+    }
+
+    .company-name {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .application-date {
+        font-size: 0.9rem;
+        color: #888;
+    }
+
+    .no-applications {
+        text-align: center;
+        font-size: 1.1rem;
+        color: #e74c3c;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+    <h2 class="page-title">Your Applied Jobs</h2>
+    <div class="job-list">
+        {% if applications %}
+            <ul class="job-history">
+                {% for application in applications %}
+                    <li class="job-item">
+                        <div class="job-details">
+                            <h3 class="job-title">{{ application.job.title }}</h3>
+                            <p class="company-name">At <strong>{{ application.job.company }}</strong></p>
+                            <p class="application-date">Applied on: <span>{{ application.applied_on|date:"F d, Y" }}</span></p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-applications">You have not applied for any jobs yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

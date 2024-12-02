@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Job Search Portal</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #082e53;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            height: 60px;
+            margin-right: 10px;
+        }
+
+        .website-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a, .logout-button {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            padding: 0;
+        }
+
+        .nav-links a:hover, .logout-button:hover {
+            text-decoration: underline;
+        }
+
+        .logout-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            padding: 0;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4A4A8D;
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .social-icons {
+            margin-top: 10px;
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'images/naukiri.png' %}" alt="Logo" class="logo" width="70" height="70">
+            <h1 class="website-name">Job Searching Portal</h1>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'available_jobs' %}">Available Jobs</a>
+            <a href="{% url 'applied_jobs' %}">Applied Jobs</a> <!-- New link added -->
+            <a href="{% url 'contact' %}">Contact Info</a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Job Searching Portal. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/Naukri/" target="_blank">
+                <img src="{% static 'images/facebook_icon.png' %}" alt="Facebook" class="social-icon">
+            </a>
+            <a href="https://x.com/Naukri?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">
+                <img src="{% static 'images/twitter_icon.png' %}" alt="Twitter" class="social-icon">
+            </a>
+            <a href="https://www.linkedin.com/company/naukri.com/?originalSubdomain=in" target="_blank">
+                <img src="{% static 'images/linkedin_icon.png' %}" alt="LinkedIn" class="social-icon">
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
