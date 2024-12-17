@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+  <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <title>ConnectSphere | Login </title>
+  <style>
+    .logo {
+        font-family: 'Arial', sans-serif; /* Clean and modern font */
+        font-size: 28px; /* Larger font size for a logo-like appearance */
+        font-weight: bold; /* Bold for emphasis */
+        color: black; /* Black color for the text */
+        letter-spacing: 2px; /* Add spacing for a professional look */
+        display: inline-block; /* Ensures proper alignment */
+    }
+
+    .custom-logo {
+  width: 600px !important; /* Set the desired width */
+  height: 500px !important; /* Set the desired height */
+  object-fit: contain !important; /* Prevent distortion and ensure proportional scaling */
+  display: block !important; /* Ensures block layout */
+  margin: 0 auto !important; /* Centers the image horizontally */
+}
+</style>
+</head>
+
+<body>
+
+  <div id="wrapper">
+    <div class="container">
+      
+        <img src="{% static 'assets2/images/loginoriginal.jpeg' %}" alt="Phone App Demo" class="custom-logo">
+
+      
+      <div class="form-data">
+        <form action="" method="POST">{% csrf_token %}
+         
+            <div class="logo">ConnectSphere</div>
+          <br>
+          <br>
+          <!-- <input type="text" placeholder="Phone number, username, or email"> -->
+          <!-- <input type="password" placeholder="Password"> -->
+          {{form}}
+          <button class="form-btn" type="submit">Log in</button>
+          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
+          <span class="has-separator">Or</span>
+          <a class="facebook-login" href="#">
+            <i class="fab fa-facebook-square"></i> Log in with Facebook
+          </a>
+          <a class="password-reset" href="#">Forgot password?</a>
+        </form>
+        <div class="sign-up">
+          Don't have an account? <a href="{% url 'sign-up' %}">Sign up</a>
+        </div>
+        
+      </div>
+    </div>
+</body>
+
+</html>
