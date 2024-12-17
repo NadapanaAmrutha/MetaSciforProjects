@@ -1,0 +1,26 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="background-color: #f9f9f9 !important; padding: 20px !important; border-radius: 8px !important; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;">
+    <h3 style="color: #333 !important;">Register for {{ event.name }}</h3>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="section" class="form-label" style="color: #333 !important;">Select Section:</label>
+            <select name="section" id="section" class="form-select" required style="background-color: #fff !important; color: #333 !important; border: 1px solid #ccc !important; border-radius: 4px !important;">
+                <option value="Gold Fan Zone" style="color: #000 !important;">Gold Fan Zone - ₹10000</option>
+                <option value="Platinum Experience" style="color: #000 !important;">Platinum Experience - ₹16500</option>
+                <option value="VIP Section" style="color: #000 !important;">VIP Section - ₹25000</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="num_tickets" class="form-label" style="color: #333 !important;">Number of Tickets:</label>
+            <input type="number" name="num_tickets" id="num_tickets" class="form-control" min="1" required style="background-color: #fff !important; color: #333 !important; border: 1px solid #ccc !important; border-radius: 4px !important;" />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="background-color: #007bff !important; border-color: #007bff !important; color: white !important;">Pay Now</button>
+    </form>
+</div>
+{% endblock %}

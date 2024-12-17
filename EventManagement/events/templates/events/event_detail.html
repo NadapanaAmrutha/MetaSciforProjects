@@ -1,0 +1,180 @@
+{% extends 'events/base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+/* General Page Styling */
+body {
+    background: linear-gradient(135deg, #a5688e, #9cb4dd); /* Gradient background */
+    color: #ffffff; /* Text color for better contrast */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Card Styling */
+.card {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* Add hover effects for the event cards */
+.card:hover {
+    background: linear-gradient(135deg, #e6bed6, #c2bcb8);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.03);
+    transition: all 0.3s ease-in-out;
+}
+
+.card h5, .card h3 {
+    transition: color 0.3s ease;
+}
+
+.card:hover h5, .card:hover h3 {
+    color: #220558; /* Change heading color on hover */
+}
+
+/* Add rounded corners for images inside cards */
+.card img {
+    border-radius: 8px;
+}
+
+/* Transition effect for images */
+.card img:hover {
+    filter: brightness(0.9);
+    transition: filter 0.3s ease;
+}
+
+/* Button Styling */
+.btn-success {
+    background-color: #ff5733;
+    border: none;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #ff6f61;
+}
+
+/* Modal Styling */
+.modal-content {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Stylish Font for Specific Descriptions */
+.stylish-text {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 1.25rem; /* Increased font size */
+    line-height: 1.6;
+    color: #44074b; /* Deep purple color */
+}
+</style>
+
+<div class="container my-5">
+    <div class="card mb-4 shadow">
+        <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.name }}">
+        <div class="card-body">
+            <h3>{{ event.name }}</h3>
+            <p>{{ event.description }}</p>
+            <p><strong>Date:</strong> {{ event.date }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Prices:</strong></p>
+            <ul>
+                {% for section, price in event.pricing.items %}
+                    <li>{{ section }} - ₹{{ price }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% if user.is_authenticated %}{% url 'register_event' event.id %}{% else %}{% url 'login' %}?next={% url 'register_event' event.id %}{% endif %}" 
+               class="btn btn-success">
+                Register for this Event
+            </a>
+        </div>
+    </div>
+
+    <!-- Event Planning Section -->
+    <div class="card shadow mb-4">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="{{ event.planning_image.url }}" class="img-fluid rounded-start" alt="Event Planning">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h3 class="card-title">An Unforgettable Night with Our Singers</h3>
+                    <p class="stylish-text">{{ event.planning_description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Management Section -->
+    <div class="card shadow mb-4">
+        <div class="row g-0">
+            <div class="col-md-6 order-md-2">
+                <img src="{{ event.management_image.url }}" class="img-fluid rounded-start" alt="Event Management">
+            </div>
+            <div class="col-md-6 order-md-1">
+                <div class="card-body">
+                    <h3 class="card-title">Experience the Grandest Concert Ever!</h3>
+                    <p class="stylish-text">{{ event.management_description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Technologies Section -->
+    <div class="card shadow mb-4">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="{{ event.technologies_image.url }}" class="img-fluid rounded-start" alt="Event Technologies">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h3 class="card-title">About Tour</h3>
+                    <p class="stylish-text">{{ event.technologies_description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Select Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'register_event' event.id %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {% for section, price in event.pricing.items %}
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="section"
+                                value="{{ section }}"
+                                id="{{ section }}"
+                                required
+                            />
+                            <label class="form-check-label" for="{{ section }}">
+                                {{ section }} - ₹{{ price }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Proceed</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

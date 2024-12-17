@@ -1,0 +1,70 @@
+{% extends 'events/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center mb-4">Your Ticket Details</h3>
+    
+    <div class="ticket-card shadow-lg rounded p-4" id="ticket-details">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Event Image -->
+                <img src="{{ ticket.event.image.url }}" class="img-fluid rounded" alt="{{ ticket.event.name }}" style="max-height: 200px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="ticket-details-text">
+                    <h5 class="ticket-title">{{ ticket.event.name }}</h5>
+                    <p class="ticket-field"><strong>Section:</strong> {{ ticket.selected_section }}</p>
+                    <p class="ticket-field"><strong>Number of Tickets:</strong> {{ ticket.num_tickets }}</p>
+                    <p class="ticket-field"><strong>Total Price:</strong> ₹{{ total_price }}</p>
+                    <p class="ticket-field"><strong>Location:</strong> {{ ticket.event.location }}</p>
+                    <p class="ticket-field"><strong>Date:</strong> {{ ticket.event.date }}</p>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'download_ticket' ticket.id %}" class="btn btn-success btn-lg">Download Ticket (PDF)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Ticket Styling */
+.ticket-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.ticket-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: black;
+}
+
+.ticket-details-text p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+/* Styling for Ticket Fields (Section, Tickets, Price, etc.) */
+.ticket-field {
+    color: black;  /* Blue color for the text */
+}
+
+/* Button Styling */
+.btn-success {
+    background-color: #28a745;
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+</style>
+
+{% endblock %}

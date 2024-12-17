@@ -1,0 +1,113 @@
+{% extends 'events/base.html' %}
+{% block content %}
+{% load static %}
+<h1 class="mb-4">Register</h1>
+
+<!-- Form Styling -->
+<style>
+    /* General Body Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #1a1a1a, #333);
+        color: #f9f9f9;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #f9c500;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Center the form and apply styling */
+    form {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #222;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(231, 221, 82, 0.5);
+        border: 3px solid #f9c500;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 1rem;
+        color: #f9c500;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        color: #f9f9f9;
+        background-color: #333;
+        border: 1px solid #f9c500;
+        border-radius: 5px;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #f9c500;
+        box-shadow: 0px 0px 5px #f9c500;
+    }
+
+    .form-control::placeholder {
+        color: #f9f9f9;
+        opacity: 0.7;
+    }
+
+    /* Button styling */
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: black;
+        background-color: #f9c500;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+        background-color: #ffcc00;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-danger {
+        color: #ff4d4d;
+        text-align: center;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        form {
+            padding: 15px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        button {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+{% endblock %}

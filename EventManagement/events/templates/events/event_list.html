@@ -1,0 +1,100 @@
+{% extends 'events/base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    /* Setting the background color to black */
+    body {
+        background-color: black;
+        color: white; /* Default text color to white for readability */
+    }
+
+    /* Ensure headings and other texts are visible on the black background */
+    .text-center {
+        color: white; /* Title color */
+    }
+
+    .card {
+        background-color: #333; /* Dark background for the cards */
+        color: white; /* Text color inside the card */
+    }
+
+    /* Event name (title) to white */
+    .card-title a {
+        color: white; /* Make event title (name) white */
+    }
+
+    .card-title a:hover {
+        color: #ff9900; /* Hover effect on event title links */
+    }
+
+    /* Event description to white */
+    .card-body p {
+        color: white; /* Change description text to white */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Button background */
+        border-color: #007bff; /* Button border */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Hover effect for button */
+        border-color: #004085;
+    }
+
+    /* Search bar style */
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .search-input {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 300px;
+    }
+</style>
+
+<h1 class="text-center mb-4">Upcoming Events</h1>
+
+<!-- Search Bar -->
+<div class="search-bar">
+    <form method="GET" action="{% url 'event_list' %}">
+        <input type="text" name="search" class="search-input" placeholder="Search events..." value="{{ request.GET.search }}">
+    </form>
+</div>
+
+<div class="row">
+    {% for event in events %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.name }}">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'event_detail' event.id %}" class="text-decoration-none">{{ event.name }}</a>
+                </h5>
+                <p class="card-text">{{ event.description|truncatechars:100 }}</p>
+                <p><strong>Date:</strong> {{ event.date }}</p>
+                <p><strong>Location:</strong> {{ event.location }}</p>
+
+                <a href="{% if user.is_authenticated %}{% url 'add_to_favorites' event.id %}{% else %}{% url 'login' %}?next={% url 'add_to_favorites' event.id %}{% endif %}" 
+                   class="btn btn-warning">
+                    {% if event in request.user.favorite_events.all %}
+                        Remove from Favorites
+                    {% else %}
+                        Add to Favorites
+                    {% endif %}
+                </a>
+
+                <a href="{% url 'event_detail' event.id %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No events found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

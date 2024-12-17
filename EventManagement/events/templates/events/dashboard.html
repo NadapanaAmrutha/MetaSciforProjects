@@ -1,0 +1,32 @@
+{% extends 'events/base.html' %}
+{% block content %}
+{% load static %}
+
+<h1 class="mb-4">My Registered Events</h1>
+<div class="row">
+    {% for registration in registrations %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <img src="{{ registration.event.image.url }}" class="card-img-top" alt="{{ registration.event.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ registration.event.name }}</h5>
+                <p><strong>Date:</strong> {{ registration.event.date }}</p>
+                <p><strong>Location:</strong> {{ registration.event.location }}</p>
+                <p><strong>Section:</strong> {{ registration.selected_section }}</p>
+                <p><strong>Amount Paid:</strong> ₹{{ registration.amount_paid }}</p>
+                <p><strong>Registered On:</strong> {{ registration.registered_at }}</p>
+
+                <!-- Delete Button -->
+                <form method="post" action="{% url 'delete_registration' registration.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>You have not registered for any events.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

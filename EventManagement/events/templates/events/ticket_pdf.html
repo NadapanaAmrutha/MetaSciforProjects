@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Download</title>
+    <style>
+        /* PDF Specific Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .ticket-container {
+            background-color: #ffffff;
+            width: 80%;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        .ticket-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ticket-header h3 {
+            font-size: 2rem;
+            color: #4e73df;
+        }
+
+        .ticket-header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+        }
+
+        .ticket-details {
+            font-size: 1.2rem;
+            color: #34495e;
+        }
+
+        .ticket-details p {
+            margin: 5px 0;
+        }
+
+        .ticket-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        /* Image Styling */
+        .ticket-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ticket-image img {
+            width: 80%;
+            height: auto;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-container">
+        <div class="ticket-header">
+            <h3>{{ ticket.event.name }}</h3>
+            <p>{{ ticket.event.date }} | {{ ticket.event.location }}</p>
+        </div>
+
+        <div class="ticket-image">
+            <img src="{{ ticket.event.image}}" class="img-fluid rounded" alt="{{ ticket.event.name }}" style="max-height: 200px; object-fit: cover;">
+        </div>
+
+        <div class="ticket-details">
+            <p><strong>Section:</strong> {{ ticket.selected_section }}</p>
+            <p><strong>Tickets:</strong> {{ ticket.num_tickets }}</p>
+            <p><strong>Total Price:</strong> ₹{{ total_price }}</p>
+            <p><strong>Ticket Number:</strong> {{ ticket.ticket_number }}</p>
+        </div>
+
+        <div class="ticket-footer">
+            <p>Thank you for booking with us!</p>
+        </div>
+    </div>
+</body>
+</html>
