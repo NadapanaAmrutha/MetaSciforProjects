@@ -1,0 +1,232 @@
+{% extends "ecommerce_app/base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="checkout-wrapper">
+    <div class="checkout-container">
+        <div class="checkout-header">
+            <h1>Checkout</h1>
+            <p>Please review your order details and complete your purchase.</p>
+        </div>
+
+        <div class="checkout-section">
+            <h2 class="section-title">Delivery Address</h2>
+            <form method="POST" class="address-form">
+                {% csrf_token %}
+                <div class="address-grid">
+                    <div class="form-group">
+                        <label for="address">Street Address</label>
+                        <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postal_code">Postal Code</label>
+                        <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" name="country" placeholder="Enter your country" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Address</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Order Summary Section -->
+        <div class="checkout-section">
+            <h2 class="section-title">Order Summary</h2>
+            <div class="order-summary">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_item_details %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>₹{{ item.product.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>₹{{ item.item_total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="order-total">
+                    <h3>Total: ₹{{ total }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proceed to Pay Button -->
+        <div class="checkout-section">
+            <a href="{% url 'payment_gateway' %}" class="btn btn-success">Proceed to Pay</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Reset and Basic Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    .checkout-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .checkout-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 20px;
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .checkout-header h1 {
+        font-size: 32px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .checkout-header p {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .checkout-section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+
+    .address-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 15px;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .order-summary {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .order-table th, .order-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    .order-table th {
+        font-size: 16px;
+        color: #333;
+    }
+
+    .order-table td {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .order-total {
+        text-align: right;
+        margin-top: 15px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #28a745;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .checkout-container {
+            padding: 20px;
+        }
+
+        .checkout-wrapper {
+            padding: 10px;
+        }
+
+        .address-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

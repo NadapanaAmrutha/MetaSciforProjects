@@ -1,0 +1,271 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShopEase{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo5.png' %}" alt="Logo" class="logo-img" width="60" height="60">
+                    </a>
+                    <a href="{% url 'home' %}">ShopEase</a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <form method="GET" action="{% url 'home' %}">
+                        <input type="text" name="q" placeholder="Search for products..." value="{{ query }}" required>
+                        <select name="category" required>
+                            <option value="">All Categories</option>
+                            <option value="electronics" {% if query == "electronics" %}selected{% endif %}>Electronics</option>
+                            <option value="clothing" {% if query == "clothing" %}selected{% endif %}>Clothing</option>
+                            <option value="home" {% if query == "home" %}selected{% endif %}>Home Appliances</option>
+                            <option value="books" {% if query == "books" %}selected{% endif %}>Books</option>
+                            <option value="Others" {% if query == "Others" %}selected{% endif %}>Others</option>
+                        </select>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="nav-links">
+                    <a href="{% url 'cart' %}" class="nav-item">Cart</a>
+                    <a href="{% url 'orders' %}" class="nav-item">Orders</a>
+                    {% if user.is_authenticated %}
+                        <div class="user-info">
+                           <span class="nav-item username">{{ user.username }}</span> 
+                            <a href="{% url 'logout' %}" class="nav-item">Logout</a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-item">Login</a>
+                        <a href="{% url 'signup' %}" class="nav-item">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>We are a leading e-commerce platform offering a wide range of products to meet all your needs.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Order Tracking</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect with Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://www.facebook.com/AmazonIN/" target="_blank"><img src="{% static 'images/icons/facebook.svg' %}" alt="Facebook"></a></li>
+                    <li><a href="https://www.instagram.com/amazon/?hl=en" target="_blank"><img src="{% static 'images/icons/instagram.svg' %}" alt="Instagram"></a></li>
+                    <li><a href="https://x.com/amazonin?lang=en" target="_blank"><img src="{% static 'images/icons/twitter.png' %}" alt="Twitter"></a></li>
+                    <li><a href="https://www.linkedin.com/company/amazon/posts/?feedView=all" target="_blank"><img src="{% static 'images/icons/linkedin.png' %}" alt="LinkedIn"></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ShopEase. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Inline CSS for styling -->
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between logo image and text */
+        }
+
+        .logo a {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input,
+        .search-bar select {
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .search-bar button {
+            padding: 8px 12px;
+            background-color: #ff8c00;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px 20px;
+            background-color: #444;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #ff8c00;
+            transform: scale(1.1);
+        }
+
+        .user-info {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .username {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .nav-item {
+            font-size: 14px;
+            color: #fff;
+            padding: 5px 10px;
+            background-color: #444;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .nav-item:hover {
+            background-color: #ff8c00;
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Footer Styling */
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .footer-section {
+            width: 30%;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ff8c00;
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 5px;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-links img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer-bottom {
+            background-color: #222;
+            padding: 10px 0;
+            text-align: center;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+        }
+    </style>
+</body>
+</html>

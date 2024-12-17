@@ -1,0 +1,154 @@
+<!-- ecommerce_app/templates/cart.html -->
+{% extends "ecommerce_app/base.html" %}
+
+{% block title %}Your Cart{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="cart-container">
+        <h1 class="cart-title">Your Shopping Cart</h1>
+
+        {% if cart_items %}
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>₹{{ item.product.price }}</td>
+                            <td>
+                                <form action="{% url 'update_quantity' item.product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity-input">
+                                    <button type="submit" class="btn btn-update">Update</button>
+                                </form>
+                            </td>
+                            <td>₹{{ item.total }}</td> <!-- Updated to use item.total -->
+                            <td>
+                                <a href="{% url 'remove_item' item.product.id %}" class="btn btn-remove">Remove</a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <p class="cart-total"><strong>Total:</strong> ₹{{ total }}</p>
+                <a href="{% url 'checkout' %}" class="btn btn-checkout">Proceed to Checkout</a>
+            </div>
+        {% else %}
+            <p class="empty-cart">Your cart is empty.</p>
+        {% endif %}
+    </div>
+
+    <style>
+        /* Cart Container */
+        .cart-container {
+            width: 80%;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Cart Title */
+        .cart-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styling */
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .cart-table th, .cart-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .cart-table th {
+            background-color: #f8f9fa;
+        }
+
+        .cart-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .cart-table td input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        /* Button Styling */
+        .btn {
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-remove {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-checkout {
+            background-color: #e4b124;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+        }
+
+        /* Cart Summary Section */
+        .cart-summary {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Empty Cart Message */
+        .empty-cart {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cart-container {
+                width: 90%;
+            }
+
+            .cart-table th, .cart-table td {
+                padding: 8px;
+            }
+
+            .cart-summary {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+
+{% endblock %}

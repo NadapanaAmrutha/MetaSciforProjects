@@ -1,0 +1,249 @@
+{% extends 'ecommerce_app/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Product Detail Page Section -->
+<div class="product-detail">
+    <!-- Left Column: Product Image -->
+    <div class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+    
+    <!-- Right Column: Product Info -->
+    <div class="product-info">
+        <h2 class="product-name">{{ product.name }}</h2>
+        <p class="product-price">Price: ₹{{ product.price }}</p>
+        
+        <!-- Product Description -->
+        <div class="description">
+            <div class="product-details-section">
+                <strong>Product Details:</strong>
+                <p style="white-space: pre-line;">{{ product.description }}</p>
+            </div>
+
+            <!-- Additional Info and About Item Sections -->
+            <div class="about-item-section">
+                <strong>About this item:</strong>
+                <p style="white-space: pre-line;">{{ product.about_item }}</p>
+            </div>
+
+            <div class="additional-info-section">
+                <strong>Additional Information:</strong>
+                <p style="white-space: pre-line;">{{ product.additional_info }}</p>
+            </div>
+        </div>
+
+        <!-- Add to Cart Form -->
+        <form method="POST" action="{% url 'product_detail' product.id %}" class="add-to-cart-form">
+            {% csrf_token %}
+            <label for="quantity" class="quantity-label">Quantity:</label>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" class="quantity-input">
+            <button type="submit" class="add-to-cart-button">Add to Cart</button>
+        </form>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h3>Reviews</h3>
+            <div class="reviews">
+                {% for review in product.reviews.all %}
+                    <div class="review">
+                        <strong class="review-user">{{ review.user.username }}</strong>
+                        <p class="review-content">{{ review.content }}</p>
+                        <p class="review-rating">Rating: {{ review.rating }}/5</p>
+                        <small class="review-date">{{ review.created_at|date:"F j, Y, g:i a" }}</small>
+                    </div>
+                {% empty %}
+                    <p>No reviews yet. Be the first to review this product!</p>
+                {% endfor %}
+            </div>
+
+            <!-- Add Review Form (Authenticated Users Only) -->
+            {% if user.is_authenticated %}
+                <h3>Add a Review</h3>
+                <form method="POST" action="{% url 'product_detail' product.id %}" class="add-review-form">
+                    {% csrf_token %}
+                    {{ review_form.as_p }}
+                    <button type="submit" class="submit-review-button">Submit Review</button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'login' %}" class="login-link">Login</a> to add a review.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Inline CSS for Styling -->
+<style>
+    /* General Page Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Product Detail Section */
+    .product-detail {
+        display: flex;
+        gap: 40px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        max-width: 1200px;
+        margin: 40px auto;
+        border-radius: 8px;
+    }
+
+    /* Left Column: Product Image */
+    .product-image {
+        flex: 1;
+        max-width: 500px;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Right Column: Product Info */
+    .product-info {
+        flex: 2;
+    }
+
+    .product-name {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .product-price {
+        font-size: 24px;
+        color: #22024d;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .description p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .product-details-section, .about-item-section, .additional-info-section {
+        margin-bottom: 20px;
+    }
+
+    .product-details-section strong, .about-item-section strong, .additional-info-section strong {
+        font-size: 18px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    /* Add to Cart Form */
+    .add-to-cart-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .quantity-label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .quantity-input {
+        width: 60px;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .add-to-cart-button {
+        background-color: #1620ac;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .add-to-cart-button:hover {
+        background-color: #5c3daf;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+        margin-top: 30px;
+    }
+
+    .reviews-section h3 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .reviews .review {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-user {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .review-content {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .review-rating {
+        font-size: 14px;
+        color: #e0a421;
+        margin-top: 5px;
+    }
+
+    .review-date {
+        font-size: 12px;
+        color: #aaa;
+        margin-top: 10px;
+    }
+
+    .add-review-form {
+        margin-top: 20px;
+    }
+
+    .submit-review-button {
+        background-color: #371499;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .submit-review-button:hover {
+        background-color: #45a049;
+    }
+
+    .login-link {
+        color: #e60000;
+        text-decoration: none;
+    }
+
+    .login-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

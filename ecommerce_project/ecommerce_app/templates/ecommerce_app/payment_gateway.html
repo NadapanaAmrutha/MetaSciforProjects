@@ -1,0 +1,167 @@
+{% extends "ecommerce_app/base.html" %}
+
+{% block title %}Payment Gateway{% endblock %}
+{% load static %}
+{% block content %}
+<div class="payment-wrapper">
+    <div class="payment-container">
+        <h1>Payment Gateway</h1>
+        <p>Select your preferred payment method and provide the required details to complete the payment.</p>
+        <form method="POST" action="{% url 'complete_payment' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="payment_method">Payment Method</label>
+                <select id="payment_method" name="payment_method" class="form-control" required>
+                    <option value="debit_card">Debit Card</option>
+                    <option value="upi">UPI (PhonePe, Google Pay)</option>
+                    <option value="cod">Cash on Delivery</option>
+                </select>
+            </div>
+
+            <div id="payment-details" class="payment-details">
+                <!-- Dynamic payment input fields will be inserted here -->
+            </div>
+
+            <button type="submit" class="btn btn-primary">Complete Payment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('payment_method').addEventListener('change', function() {
+    const paymentDetails = document.getElementById('payment-details');
+    paymentDetails.innerHTML = '';
+
+    if (this.value === 'debit_card') {
+        paymentDetails.innerHTML = `
+            <div class="form-group">
+                <label for="card_number">Card Number</label>
+                <input type="text" id="card_number" name="card_number" placeholder="1234 5678 1234 5678" required>
+            </div>
+            <div class="form-group">
+                <label for="expiry_date">Expiry Date</label>
+                <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/YY" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="123" required>
+            </div>
+        `;
+    } else if (this.value === 'upi') {
+        paymentDetails.innerHTML = `
+            <div class="form-group">
+                <label for="upi_id">UPI ID</label>
+                <input type="text" id="upi_id" name="upi_id" placeholder="example@bank" required>
+            </div>
+        `;
+    } else if (this.value === 'cod') {
+        paymentDetails.innerHTML = '<p>No additional details required for Cash on Delivery.</p>';
+    }
+});
+</script>
+
+<style>
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.payment-wrapper {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.payment-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.payment-container h1 {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment-container p {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.payment-details {
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 768px) {
+    .payment-wrapper {
+        padding: 10px;
+    }
+
+    .payment-container {
+        padding: 20px;
+    }
+
+    .btn {
+        width: auto;
+    }
+}
+</style>
+
+{% endblock %}
